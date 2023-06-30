@@ -6,5 +6,4 @@ import pl.wwsis.sem3.pz.concert.office.pzconcertoffice.entities.admin.Account;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account,Long> {
-    Account findByName(String name);
 }

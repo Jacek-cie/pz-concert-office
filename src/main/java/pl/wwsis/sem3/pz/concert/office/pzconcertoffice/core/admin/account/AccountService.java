@@ -12,12 +12,6 @@ public class AccountService  extends AbstractService<AccountDto, Account> {
 
     @Autowired
     private AccountTypeService accountTypeService;
-    @Autowired
-    private AccountRepository repository;
-    public AccountDto findByUsername(String name){
-        Account account = repository.findByName(name);
-        return toDto(account);
-    }
     @Override
     public AccountDto toDto(Account entity) {
         AccountDto dto = new AccountDto();
