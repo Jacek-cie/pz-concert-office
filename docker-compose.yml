@@ -3,8 +3,8 @@ services:
   api:
     container_name: backend_con
     build:
-        context: .
-        dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     ports:
       - 8005:8080
     depends_on:
@@ -15,12 +15,12 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    volumes:
-      - api:/var/lib/api/data
-      
+
   PostgreSQL:
     image: postgres
     container_name: database_con
+    volumes:
+      - ./PostgreSQL:/docker-entrypoint-createDB.d
     ports:
       - 8010:5432
     environment:
@@ -34,9 +34,3 @@ services:
       timeout: 5s
       retries: 2
 
-    volumes:
-      - ./PostgreSQL:/docker-entrypoint-createDB.d
-
-volumes:
-    pgdata: {}
-    api: {}
