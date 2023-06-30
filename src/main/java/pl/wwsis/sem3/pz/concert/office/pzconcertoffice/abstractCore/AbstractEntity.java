@@ -16,5 +16,4 @@ public abstract class AbstractEntity extends AbstractBaseEntity{
     )
     private Integer version ;
 
-
 }

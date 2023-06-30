@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractService <DTO extends AbstractDto,ENTITY extends AbstractBaseEntity > {
+public abstract class AbstractService <DTO extends AbstractDto,ENTITY extends AbstractBaseEntity> {
     @Autowired
     protected JpaRepository<ENTITY,Long> repository;
-
     public List<DTO> getAll(){
         List<ENTITY> entityList =repository.findAll();
         List<DTO> dtoList = new ArrayList<>();
@@ -19,15 +18,16 @@ public abstract class AbstractService <DTO extends AbstractDto,ENTITY extends Ab
         }
         return dtoList;
     }
-    public Long insertNew(DTO dto){
-        if(dto.id != null) {
+    public DTO insertNew(DTO dto){
+        if(dto.id == null) {
+            dto.version=  1;
             ENTITY existingEntity = toEntity(dto);
-            repository.save(existingEntity);
-            return dto.id;
+            ENTITY saved=repository.save(existingEntity);
+            return toDto(saved);
         }else{
             ENTITY newEntity = toEntity(dto);
-            repository.save(newEntity);
-            return newEntity.getId();
+            ENTITY saved =repository.save(newEntity);
+            return toDto(saved);
         }
     }
     public DTO findById(Long id){
@@ -40,11 +40,9 @@ public abstract class AbstractService <DTO extends AbstractDto,ENTITY extends Ab
         ENTITY entity = foundDto.get();
         return entity;
     }
-
     public void deleteById(Long id){
         repository.deleteById(id);
     }
-
     public abstract DTO toDto(ENTITY entity);
     public abstract ENTITY toEntity(DTO dto);
 }
